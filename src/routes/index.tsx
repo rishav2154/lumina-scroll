@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import "@fontsource-variable/inter";
+import "@fontsource-variable/inter/index.css";
 import "@fontsource/space-grotesk/400.css";
 import "@fontsource/space-grotesk/500.css";
 import "@fontsource/space-grotesk/600.css";
