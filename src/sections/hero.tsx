@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform, type Variants } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, type Variants, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useState } from "react";
 import { SplitText } from "@/components/anim/split-text";
 import { personal, stats } from "@/lib/data";
 import { Counter } from "@/components/anim/counter";
@@ -10,32 +10,42 @@ const portrait = "https://images.pexels.com/photos/3764119/pexels-photo-3764119.
 const EASE = [0.2, 0.8, 0.2, 1] as const;
 
 const reveal: Variants = {
-  hidden: { opacity: 0, y: 40, filter: "blur(14px)" },
+  hidden: { opacity: 0, y: 40, filter: "blur(16px)" },
   show: (i: number = 0) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 1, delay: 0.1 + i * 0.08, ease: EASE },
+    transition: { duration: 1.1, delay: 0.15 + i * 0.1, ease: EASE },
   }),
 };
 
 const portraitReveal: Variants = {
-  hidden: { opacity: 0, scale: 0.88, filter: "blur(24px)" },
+  hidden: { opacity: 0, scale: 0.85, filter: "blur(28px)" },
   show: {
     opacity: 1,
     scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 1.3, delay: 0.2, ease: EASE },
+    transition: { duration: 1.5, delay: 0.3, ease: EASE },
   },
 };
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState<string | null>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 160]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.25]);
-  const auroraY = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.2]);
+  const auroraY = useTransform(scrollYProgress, [0, 1], [0, -140]);
+
+  const mouseX = useSpring(useMotionValue(0), { stiffness: 150, damping: 15 });
+  const mouseY = useSpring(useMotionValue(0), { stiffness: 150, damping: 15 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left - rect.width / 2) * 0.02);
+    mouseY.set((e.clientY - rect.top - rect.height / 2) * 0.02);
+  };
 
   const socials = [
     { Icon: Github, href: personal.social.github, label: "GitHub" },
@@ -55,6 +65,7 @@ export function Hero() {
 
       <motion.div
         style={{ y, scale, opacity }}
+        onMouseMove={handleMouseMove}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.1 }}
@@ -64,7 +75,7 @@ export function Hero() {
           <motion.div
             variants={reveal}
             custom={0}
-            className="mb-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.35em] text-primary"
+            className="mb-5 inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.35em] text-primary"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
@@ -79,7 +90,7 @@ export function Hero() {
           <motion.h1
             variants={reveal}
             custom={1}
-            className="font-display text-[clamp(2.8rem,7vw,6rem)] font-bold leading-[0.93] tracking-tight"
+            className="font-display text-[clamp(2.8rem,7.5vw,6.5rem)] font-bold leading-[0.92] tracking-tight"
           >
             <SplitText text="Founder &" className="block text-foreground" />
             <span className="block text-glow text-primary">
@@ -103,12 +114,26 @@ export function Hero() {
                 href={href}
                 aria-label={label}
                 data-cursor={label}
-                whileHover={{ y: -4, scale: 1.08 }}
-                whileTap={{ scale: 0.96 }}
+                onHoverStart={() => setIsHovered(label)}
+                onHoverEnd={() => setIsHovered(null)}
+                whileHover={{ y: -4, scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="grid h-12 w-12 place-items-center rounded-full border border-foreground/10 bg-paper/60 text-foreground backdrop-blur transition-colors hover:border-primary/30 hover:text-primary"
+                className="relative grid h-12 w-12 place-items-center rounded-full border border-foreground/10 bg-paper/60 text-foreground backdrop-blur transition-colors hover:border-primary/30 hover:text-primary"
               >
                 <Icon className="h-[18px] w-[18px]" />
+                <AnimatePresence>
+                  {isHovered === label && (
+                    <motion.span
+                      initial={{ opacity: 0, y: 4, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 4, scale: 0.9 }}
+                      className="absolute -bottom-8 whitespace-nowrap rounded bg-foreground px-2 py-1 text-[10px] text-background"
+                    >
+                      {label}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.a>
             ))}
           </motion.div>
@@ -119,7 +144,11 @@ export function Hero() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               className="glow-btn group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-foreground px-7 py-3.5 text-sm font-bold uppercase tracking-widest text-background"
+              style={{
+                boxShadow: "0 12px 40px -8px oklch(0.14 0.02 260 / 0.3)",
+              }}
             >
+              <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 opacity-0 transition-opacity group-hover:opacity-100" />
               <Download className="relative h-4 w-4" />
               <span className="relative">Download CV</span>
             </motion.a>
@@ -144,8 +173,8 @@ export function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 + i * 0.06 }}
-                whileHover={{ y: -3, scale: 1.02 }}
+                transition={{ duration: 0.6, delay: 0.5 + i * 0.08 }}
+                whileHover={{ y: -4, scale: 1.02 }}
                 className="group glass relative overflow-hidden rounded-2xl p-4 transition-colors hover:border-primary/30"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
@@ -167,45 +196,44 @@ export function Hero() {
         >
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
             className="absolute inset-0 rounded-full"
             style={{
               background:
-                "conic-gradient(from 0deg, transparent, color-mix(in oklab, var(--primary) 58%, transparent), transparent 35%, color-mix(in oklab, var(--primary) 28%, transparent), transparent 70%, color-mix(in oklab, var(--primary) 48%, transparent), transparent)",
-              filter: "blur(2px)",
+                "conic-gradient(from 0deg, transparent, color-mix(in oklab, var(--primary) 60%, transparent), transparent 35%, color-mix(in oklab, var(--primary) 30%, transparent), transparent 70%, color-mix(in oklab, var(--primary) 50%, transparent), transparent)",
+              filter: "blur(3px)",
             }}
           />
           <motion.div
-            animate={{ scale: [1, 1.05, 1], opacity: [0.45, 0.75, 0.45] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ scale: [1, 1.06, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
             className="absolute inset-3 rounded-full glow-ring"
           />
           <motion.div
-            animate={{ scale: [1, 1.12, 1], opacity: [0.25, 0.45, 0.25] }}
-            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -inset-1 rounded-full"
+            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -inset-2 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, color-mix(in oklab, var(--primary) 22%, transparent), transparent 70%)",
-              filter: "blur(18px)",
+                "radial-gradient(circle, color-mix(in oklab, var(--primary) 25%, transparent), transparent 70%)",
+              filter: "blur(20px)",
             }}
           />
           <div className="absolute inset-8 overflow-hidden rounded-full border border-primary/30 glow-ring">
-            <img
+            <motion.img
               src={portrait}
               alt={personal.name}
               width={1024}
               height={1024}
-              className="h-full w-full object-cover [filter:contrast(1.04)_saturate(1.06)]"
+              className="h-full w-full object-cover [filter:contrast(1.04)_saturate(1.08)]"
               loading="eager"
-              decoding="async"
             />
             <div
               aria-hidden
               className="absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(circle at 50% 120%, color-mix(in oklab, var(--primary) 38%, transparent), transparent 55%)",
+                  "radial-gradient(circle at 50% 120%, color-mix(in oklab, var(--primary) 40%, transparent), transparent 60%)",
               }}
             />
           </div>
@@ -214,14 +242,14 @@ export function Hero() {
             transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
             className="absolute inset-0"
           >
-            <span className="absolute left-1/2 top-0 -translate-x-1/2 block h-4 w-4 rounded-full bg-primary shadow-[0_0_22px_var(--primary)]" />
+            <span className="absolute left-1/2 top-0 -translate-x-1/2 block h-4 w-4 rounded-full bg-primary shadow-[0_0_24px_var(--primary)]" />
           </motion.div>
           <motion.div
             animate={{ rotate: -360 }}
             transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
             className="absolute inset-4"
           >
-            <span className="absolute bottom-0 left-0 block h-2 w-2 rounded-full bg-foreground/25" />
+            <span className="absolute bottom-0 left-0 block h-2 w-2 rounded-full bg-foreground/30 shadow-[0_0_12px_var(--primary)]" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -229,13 +257,13 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 0.7 }}
+        transition={{ delay: 2, duration: 0.8 }}
         className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
       >
         <motion.a
           href="#about"
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
         >
           <span className="text-[11px] uppercase tracking-[0.25em]">Scroll to explore</span>
@@ -245,3 +273,5 @@ export function Hero() {
     </section>
   );
 }
+
+import { AnimatePresence } from "framer-motion";

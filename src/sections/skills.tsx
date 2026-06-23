@@ -1,53 +1,10 @@
-import { lazy, Suspense, useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import { SkillsGalaxy } from "@/components/three/skills-galaxy";
 import { skills } from "@/lib/data";
 
-const SkillsGalaxy = lazy(() =>
-  import("@/components/three/skills-galaxy").then((m) => ({ default: m.SkillsGalaxy }))
-);
-
-function GalaxyPlaceholder() {
-  return (
-    <div className="aspect-square w-full max-w-[500px] justify-self-center">
-      <div className="h-full w-full animate-pulse rounded-full border border-background/10 bg-background/5" />
-    </div>
-  );
-}
-
-function GalaxyWrapper() {
-  const [mounted, setMounted] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "100px", once: true });
-
-  useEffect(() => {
-    if (inView) {
-      const idle = window.requestIdleCallback?.(() => setMounted(true)) || setTimeout(() => setMounted(true), 50);
-      return () => typeof idle === "number" ? clearTimeout(idle) : window.cancelIdleCallback?.(idle);
-    }
-  }, [inView]);
-
-  return (
-    <div ref={ref} className="relative aspect-square w-full max-w-[500px] justify-self-center">
-      <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-primary/10 via-transparent to-primary/5 blur-3xl" />
-      <div className="relative h-full w-full rounded-full border border-background/10">
-        {mounted ? (
-          <Suspense fallback={<GalaxyPlaceholder />}>
-            <SkillsGalaxy />
-          </Suspense>
-        ) : (
-          <GalaxyPlaceholder />
-        )}
-      </div>
-    </div>
-  );
-}
-
 export function Skills() {
-  const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section ref={ref} id="skills" className="relative overflow-hidden bg-foreground text-background">
+    <section id="skills" className="relative overflow-hidden bg-foreground text-background">
       <div className="grain absolute inset-0 opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.03] to-transparent" />
 
@@ -64,7 +21,8 @@ export function Skills() {
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="font-display text-[clamp(1.75rem,4.5vw,3.5rem)] font-medium leading-tight tracking-tight"
           >
@@ -75,12 +33,13 @@ export function Skills() {
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-5 max-w-md text-pretty text-sm leading-relaxed text-background/60"
           >
             I've spent a decade refusing to specialize in just one thing. The galaxy on the right
-            is interactive - every node is a discipline I ship in production.
+            is interactive — every node is a discipline I ship in production.
           </motion.p>
 
           <motion.ul
@@ -119,7 +78,18 @@ export function Skills() {
           </motion.ul>
         </div>
 
-        <GalaxyWrapper />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
+          className="relative aspect-square w-full max-w-[500px] justify-self-center"
+        >
+          <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-primary/10 via-transparent to-primary/5 blur-3xl" />
+          <div className="relative h-full w-full rounded-full border border-background/10">
+            <SkillsGalaxy />
+          </div>
+        </motion.div>
       </div>
     </section>
   );
