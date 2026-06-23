@@ -159,7 +159,7 @@ export function Hero() {
               alt={personal.name}
               width={1024}
               height={1024}
-              className="h-full w-full object-cover [filter:grayscale(1)_contrast(1.05)_brightness(0.95)]"
+              className="h-full w-full object-cover [filter:contrast(1.05)_saturate(1.05)]"
             />
             <div
               aria-hidden
