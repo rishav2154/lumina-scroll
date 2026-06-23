@@ -93,16 +93,21 @@
 
 @layer base {
   * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
   html, body { background-color: var(--color-background); color: var(--color-foreground); }
   body {
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    min-height: 100svh;
   }
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.025em; }
   ::selection { background: var(--primary); color: var(--primary-foreground); }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 6px; }
+  img, svg, video { display: block; max-width: 100%; }
 }
 
 @layer utilities {
@@ -114,13 +119,14 @@
     content: "";
     position: absolute; inset: 0; pointer-events: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    opacity: 0.07;
-    mix-blend-mode: multiply;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
   }
 
   .glass {
     background: color-mix(in oklab, var(--paper) 65%, transparent);
     backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
     border: 1px solid color-mix(in oklab, var(--primary) 18%, transparent);
   }
 
@@ -136,6 +142,7 @@
       radial-gradient(50% 50% at 80% 70%, color-mix(in oklab, oklch(0.7 0.18 260) 22%, transparent), transparent 60%),
       radial-gradient(40% 50% at 50% 90%, color-mix(in oklab, oklch(0.85 0.14 80) 28%, transparent), transparent 60%);
     filter: blur(64px);
+    pointer-events: none;
   }
 
   .glow-ring {
@@ -159,7 +166,23 @@
   .hover-lift { transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s; }
   .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 30px 60px -30px color-mix(in oklab, var(--ink) 30%, transparent); }
 
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--primary) 35%, transparent);
+    border-radius: 999px;
+    border: 2px solid var(--background);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
   @media (prefers-reduced-motion: reduce) {
     .marquee-track { animation: none; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+    html { scroll-behavior: auto; }
   }
 }

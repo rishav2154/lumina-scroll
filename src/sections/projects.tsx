@@ -1,11 +1,26 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { projects } from "@/lib/data";
 
 export function Projects() {
   const ref = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [distance, setDistance] = useState(0);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-72%"]);
+
+  useEffect(() => {
+    const measure = () => {
+      const t = trackRef.current;
+      if (!t) return;
+      const overflow = t.scrollWidth - window.innerWidth;
+      setDistance(Math.max(0, overflow + 48));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const x = useTransform(scrollYProgress, [0, 1], [0, -distance]);
 
   return (
     <section
@@ -31,8 +46,9 @@ export function Projects() {
 
         <div className="relative flex-1">
           <motion.div
+            ref={trackRef}
             style={{ x }}
-            className="flex h-full items-center gap-8 pl-[10vw] pr-[10vw] will-change-transform"
+            className="flex h-full w-max items-center gap-8 pl-[8vw] pr-[8vw] will-change-transform"
           >
             {projects.map((p, i) => (
               <motion.article
