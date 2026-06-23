@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { useRef } from "react";
 import { SplitText } from "@/components/anim/split-text";
 import { personal, stats } from "@/lib/data";
@@ -6,17 +6,40 @@ import { Counter } from "@/components/anim/counter";
 import { Github, Linkedin, Twitter, Send, Download } from "lucide-react";
 import portrait from "@/assets/portrait.jpg";
 
+const EASE = [0.2, 0.8, 0.2, 1] as const;
+
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 32, filter: "blur(14px)" },
+  show: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 1, delay: 0.15 + i * 0.12, ease: EASE },
+  }),
+};
+
+const portraitReveal: Variants = {
+  hidden: { opacity: 0, scale: 0.86, filter: "blur(24px)" },
+  show: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 1.4, delay: 0.2, ease: EASE },
+  },
+};
+
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 160]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
+  const auroraY = useTransform(scrollYProgress, [0, 1], [0, -120]);
 
   return (
     <section ref={ref} id="top" className="relative min-h-[100svh] overflow-hidden pt-32">
       <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], [0, -120]) }}
+        style={{ y: auroraY }}
         aria-hidden
         className="aurora absolute -top-20 left-1/2 h-[90vmin] w-[110vmin] -translate-x-1/2 opacity-80"
       />
@@ -24,28 +47,33 @@ export function Hero() {
 
       <motion.div
         style={{ y, scale, opacity }}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.15 }}
         className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-[1.1fr_1fr]"
       >
         <div>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+            variants={reveal}
+            custom={0}
             className="mb-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.4em] text-primary text-glow"
           >
             <span className="h-px w-8 bg-primary" />
             Hi, I'm {personal.name.split(" ")[0]}
           </motion.div>
 
-          <h1 className="font-display text-[clamp(3rem,8vw,7rem)] font-bold leading-[0.95] tracking-tight text-glow">
+          <motion.h1
+            variants={reveal}
+            custom={1}
+            className="font-display text-[clamp(3rem,8vw,7rem)] font-bold leading-[0.95] tracking-tight text-glow"
+          >
             <SplitText text="Founder &" className="block text-foreground" />
             <SplitText text="Technologist." className="block text-primary" />
-          </h1>
+          </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1, delay: 0.6 }}
+            variants={reveal}
+            custom={2}
             className="mt-7 max-w-xl text-balance text-base text-muted-foreground sm:text-lg"
           >
             {personal.tagline} A persistent optimist about software that
@@ -55,9 +83,8 @@ export function Hero() {
 
           {/* Social icons */}
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.85 }}
+            variants={reveal}
+            custom={3}
             className="mt-8 flex items-center gap-3"
           >
             {[
@@ -80,9 +107,8 @@ export function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
+            variants={reveal}
+            custom={4}
             className="mt-9 flex flex-wrap items-center gap-4"
           >
             <motion.a
@@ -104,12 +130,11 @@ export function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.3 }}
+            variants={reveal}
+            custom={5}
             className="mt-14 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4"
           >
-            {stats.map((s, i) => (
+            {stats.map((s) => (
               <motion.div
                 key={s.label}
                 whileHover={{ y: -3 }}
@@ -127,7 +152,10 @@ export function Hero() {
           </motion.div>
         </div>
 
-        <div className="relative aspect-square w-full max-w-[560px] justify-self-center">
+        <motion.div
+          variants={portraitReveal}
+          className="relative aspect-square w-full max-w-[560px] justify-self-center"
+        >
           {/* Outer rotating glow ring */}
           <motion.div
             aria-hidden
@@ -148,12 +176,7 @@ export function Hero() {
             className="absolute inset-3 rounded-full glow-ring"
           />
           {/* Portrait disc */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, ease: [0.2, 0.8, 0.2, 1] }}
-            className="absolute inset-8 overflow-hidden rounded-full border border-primary/40 glow-ring"
-          >
+          <div className="absolute inset-8 overflow-hidden rounded-full border border-primary/40 glow-ring">
             <img
               src={portrait}
               alt={personal.name}
@@ -169,7 +192,7 @@ export function Hero() {
                   "radial-gradient(circle at 50% 110%, color-mix(in oklab, var(--primary) 35%, transparent), transparent 55%)",
               }}
             />
-          </motion.div>
+          </div>
           {/* Orbiting dot */}
           <motion.div
             aria-hidden
@@ -179,7 +202,7 @@ export function Hero() {
           >
             <span className="absolute left-1/2 top-0 -translate-x-1/2 block h-3 w-3 rounded-full bg-primary shadow-[0_0_20px_var(--primary)]" />
           </motion.div>
-        </div>
+        </motion.div>
       </motion.div>
 
       <motion.div
