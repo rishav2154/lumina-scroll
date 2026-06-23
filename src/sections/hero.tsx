@@ -4,7 +4,8 @@ import { SplitText } from "@/components/anim/split-text";
 import { personal, stats } from "@/lib/data";
 import { Counter } from "@/components/anim/counter";
 import { Github, Linkedin, Twitter, Send, Download } from "lucide-react";
-import portrait from "@/assets/portrait.jpg";
+
+const portrait = "https://images.pexels.com/photos/3764119/pexels-photo-3764119.jpeg?auto=compress&cs=tinysrgb&w=1024";
 
 const EASE = [0.2, 0.8, 0.2, 1] as const;
 
