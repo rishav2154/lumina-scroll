@@ -1,10 +1,10 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { HeroSphere } from "@/components/three/hero-sphere";
-import { Scramble } from "@/components/anim/scramble";
 import { SplitText } from "@/components/anim/split-text";
 import { personal, stats } from "@/lib/data";
 import { Counter } from "@/components/anim/counter";
+import { Github, Linkedin, Twitter, Send, Download } from "lucide-react";
+import portrait from "@/assets/portrait.jpg";
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -18,7 +18,7 @@ export function Hero() {
       <motion.div
         style={{ y: useTransform(scrollYProgress, [0, 1], [0, -120]) }}
         aria-hidden
-        className="aurora absolute -top-40 left-1/2 h-[60vmin] w-[80vmin] -translate-x-1/2 opacity-70"
+        className="aurora absolute -top-20 left-1/2 h-[90vmin] w-[110vmin] -translate-x-1/2 opacity-80"
       />
       <div className="grain pointer-events-none absolute inset-0" />
 
@@ -31,20 +31,15 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-paper/60 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur"
+            className="mb-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.4em] text-primary text-glow"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-            </span>
-            Open to new chapters · {personal.location}
+            <span className="h-px w-8 bg-primary" />
+            Hi, I'm {personal.name.split(" ")[0]}
           </motion.div>
 
-          <h1 className="font-display text-[clamp(2.6rem,7.4vw,6.2rem)] font-medium leading-[0.95] tracking-tight">
-            <SplitText text="A founder building" className="block" />
-            <span className="block">
-              <Scramble text="what's next." className="bg-gradient-to-r from-primary via-foreground to-primary bg-clip-text text-transparent" />
-            </span>
+          <h1 className="font-display text-[clamp(3rem,8vw,7rem)] font-bold leading-[0.95] tracking-tight text-glow">
+            <SplitText text="Founder &" className="block text-foreground" />
+            <SplitText text="Technologist." className="block text-primary" />
           </h1>
 
           <motion.p
@@ -53,42 +48,59 @@ export function Hero() {
             transition={{ duration: 1, delay: 0.6 }}
             className="mt-7 max-w-xl text-balance text-base text-muted-foreground sm:text-lg"
           >
-            {personal.tagline} I'm {personal.name} — operator, designer, and persistent optimist
-            about software that respects people.
+            {personal.tagline} A persistent optimist about software that
+            respects people, building products at the intersection of design,
+            AI, and human ambition.
           </motion.p>
 
+          {/* Social icons */}
           <motion.div
-            initial="hidden"
-            animate="show"
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.08, delayChildren: 0.9 } },
-            }}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.85 }}
+            className="mt-8 flex items-center gap-3"
           >
             {[
-              { label: "View work", href: "#projects", primary: true },
-              { label: "Read story", href: "#about" },
-              { label: "Download CV", href: "#" },
-            ].map((b) => (
+              { Icon: Github, href: personal.social.github, label: "GitHub" },
+              { Icon: Linkedin, href: personal.social.linkedin, label: "LinkedIn" },
+              { Icon: Twitter, href: personal.social.twitter, label: "Twitter" },
+              { Icon: Send, href: `mailto:${personal.email}`, label: "Email" },
+            ].map(({ Icon, href, label }) => (
               <motion.a
-                key={b.label}
-                href={b.href}
-                variants={{
-                  hidden: { opacity: 0, y: 14, filter: "blur(6px)" },
-                  show: { opacity: 1, y: 0, filter: "blur(0px)" },
-                }}
-                transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
-                className={
-                  b.primary
-                    ? "group inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background transition-transform hover:scale-[1.03]"
-                    : "group inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-paper/60 px-5 py-3 text-sm text-foreground backdrop-blur transition-colors hover:bg-foreground/5"
-                }
+                key={label}
+                href={href}
+                aria-label={label}
+                whileHover={{ y: -3, scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                className="grid h-11 w-11 place-items-center rounded-full border border-primary/40 bg-paper/40 text-primary backdrop-blur transition-colors hover:bg-primary/10"
               >
-                {b.label}
-                <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                <Icon className="h-4 w-4" />
               </motion.a>
             ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="mt-9 flex flex-wrap items-center gap-4"
+          >
+            <motion.a
+              href="#"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="glow-btn group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold uppercase tracking-widest text-primary-foreground"
+            >
+              <Download className="h-4 w-4" />
+              Download CV
+            </motion.a>
+            <a
+              href="#projects"
+              className="group inline-flex items-center gap-2 rounded-full border border-primary/40 px-7 py-3.5 text-sm font-semibold uppercase tracking-widest text-foreground transition-colors hover:bg-primary/10"
+            >
+              View Work
+              <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
           </motion.div>
 
           <motion.div
@@ -116,13 +128,56 @@ export function Hero() {
         </div>
 
         <div className="relative aspect-square w-full max-w-[560px] justify-self-center">
+          {/* Outer rotating glow ring */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
+            aria-hidden
+            animate={{ rotate: 360 }}
+            transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "conic-gradient(from 0deg, transparent, color-mix(in oklab, var(--primary) 70%, transparent), transparent 40%, color-mix(in oklab, var(--primary) 40%, transparent), transparent 80%)",
+              filter: "blur(2px)",
+            }}
+          />
+          {/* Pulsing halo */}
+          <motion.div
+            aria-hidden
+            animate={{ scale: [1, 1.08, 1], opacity: [0.55, 0.85, 0.55] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-3 rounded-full glow-ring"
+          />
+          {/* Portrait disc */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: 1.1, ease: [0.2, 0.8, 0.2, 1] }}
+            className="absolute inset-8 overflow-hidden rounded-full border border-primary/40 glow-ring"
+          >
+            <img
+              src={portrait}
+              alt={personal.name}
+              width={1024}
+              height={1024}
+              className="h-full w-full object-cover [filter:grayscale(1)_contrast(1.05)_brightness(0.95)]"
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 110%, color-mix(in oklab, var(--primary) 35%, transparent), transparent 55%)",
+              }}
+            />
+          </motion.div>
+          {/* Orbiting dot */}
+          <motion.div
+            aria-hidden
+            animate={{ rotate: 360 }}
+            transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
             className="absolute inset-0"
           >
-            <HeroSphere />
+            <span className="absolute left-1/2 top-0 -translate-x-1/2 block h-3 w-3 rounded-full bg-primary shadow-[0_0_20px_var(--primary)]" />
           </motion.div>
         </div>
       </motion.div>
