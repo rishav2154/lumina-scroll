@@ -4,8 +4,7 @@ import { SplitText } from "@/components/anim/split-text";
 import { personal, stats } from "@/lib/data";
 import { Counter } from "@/components/anim/counter";
 import { Linkedin, Mail, Phone, Download, ArrowDown, Sparkles } from "lucide-react";
-
-const portrait = "https://images.pexels.com/photos/3764119/pexels-photo-3764119.jpeg?auto=compress&cs=tinysrgb&w=1024";
+import portrait from "../public/ChatGPT Image Jun 24, 2026, 01_05_43 PM.png";
 
 const EASE = [0.2, 0.8, 0.2, 1] as const;
 
@@ -90,11 +89,11 @@ export function Hero() {
           <motion.h1
             variants={reveal}
             custom={1}
-            className="font-display text-[clamp(3rem,8.2vw,7.25rem)] font-bold leading-[0.88] tracking-tight"
+            className="font-display text-[clamp(3rem,8.2vw,7.25rem)] font-bold leading-[0.98] tracking-tight"
           >
             <SplitText text="Himanshi" className="block text-foreground" />
-            <span className="text-gradient block text-glow">
-              <SplitText text="Chawla." className="inline" />
+            <span className="block pb-2 text-primary text-glow">
+              <SplitText text="Chawla." className="inline-block" />
             </span>
           </motion.h1>
 

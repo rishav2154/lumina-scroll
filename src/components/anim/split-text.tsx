@@ -24,6 +24,8 @@ export function SplitText({
   as?: keyof React.JSX.IntrinsicElements;
 }) {
   const Comp = motion[As as "span"] as typeof motion.span;
+  const words = text.split(" ");
+
   return (
     <Comp
       variants={container}
@@ -32,10 +34,11 @@ export function SplitText({
       viewport={{ once: true, margin: "-10%" }}
       className={className}
     >
-      {text.split(" ").map((w, i) => (
+      {words.map((w, i) => (
         <span key={i} className="inline-block overflow-hidden pb-[0.12em] align-bottom">
           <motion.span variants={word} className="inline-block">
-            {w}&nbsp;
+            {w}
+            {i < words.length - 1 ? "\u00A0" : ""}
           </motion.span>
         </span>
       ))}
