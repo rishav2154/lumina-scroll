@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { SplitText } from "@/components/anim/split-text";
 import { personal, stats } from "@/lib/data";
 import { Counter } from "@/components/anim/counter";
-import { Github, Linkedin, Twitter, Send, Download, ArrowDown, Sparkles } from "lucide-react";
+import { Linkedin, Mail, Phone, Download, ArrowDown, Sparkles } from "lucide-react";
 
 const portrait = "https://images.pexels.com/photos/3764119/pexels-photo-3764119.jpeg?auto=compress&cs=tinysrgb&w=1024";
 
@@ -48,14 +48,14 @@ export function Hero() {
   };
 
   const socials = [
-    { Icon: Github, href: personal.social.github, label: "GitHub" },
     { Icon: Linkedin, href: personal.social.linkedin, label: "LinkedIn" },
-    { Icon: Twitter, href: personal.social.twitter, label: "Twitter" },
-    { Icon: Send, href: `mailto:${personal.email}`, label: "Email" },
+    { Icon: Mail, href: personal.social.email, label: "Email" },
+    { Icon: Phone, href: personal.social.phone, label: "Phone" },
   ];
 
   return (
     <section ref={ref} id="top" className="relative min-h-[100svh] overflow-hidden pt-28 md:pt-32">
+      <div aria-hidden className="surface-grid pointer-events-none absolute inset-0 opacity-70" />
       <motion.div
         style={{ y: auroraY }}
         aria-hidden
@@ -69,13 +69,13 @@ export function Hero() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.1 }}
-        className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-6 lg:grid-cols-[1.15fr_1fr] lg:gap-16"
+        className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16"
       >
         <div className="pb-8 lg:pb-0">
           <motion.div
             variants={reveal}
             custom={0}
-            className="mb-5 inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.35em] text-primary"
+            className="eyebrow-pill mb-6 text-xs font-semibold uppercase tracking-[0.28em]"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
@@ -90,21 +90,22 @@ export function Hero() {
           <motion.h1
             variants={reveal}
             custom={1}
-            className="font-display text-[clamp(2.8rem,7.5vw,6.5rem)] font-bold leading-[0.92] tracking-tight"
+            className="font-display text-[clamp(3rem,8.2vw,7.25rem)] font-bold leading-[0.88] tracking-tight"
           >
-            <SplitText text="Founder &" className="block text-foreground" />
-            <span className="block text-glow text-primary">
-              <SplitText text="Technologist." className="inline" />
+            <SplitText text="Himanshi" className="block text-foreground" />
+            <span className="text-gradient block text-glow">
+              <SplitText text="Chawla." className="inline" />
             </span>
           </motion.h1>
 
           <motion.p
             variants={reveal}
             custom={2}
-            className="mt-6 max-w-lg text-balance text-base leading-relaxed text-muted-foreground md:text-lg"
+            className="mt-7 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground md:text-xl"
           >
-            {personal.tagline} A persistent optimist about software that respects people, building
-            products at the intersection of design, AI, and human ambition.
+            {personal.tagline} Currently serving as Head of Business Development & Co-Founder at
+            NeoSankalp, with experience across cyber security analysis, technical support, SEO,
+            content writing, and client management.
           </motion.p>
 
           <motion.div variants={reveal} custom={3} className="mt-8 flex items-center gap-3">
@@ -119,7 +120,7 @@ export function Hero() {
                 whileHover={{ y: -4, scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="relative grid h-12 w-12 place-items-center rounded-full border border-foreground/10 bg-paper/60 text-foreground backdrop-blur transition-colors hover:border-primary/30 hover:text-primary"
+                className="relative grid h-12 w-12 place-items-center rounded-full border border-foreground/10 bg-paper/70 text-foreground shadow-[0_12px_30px_-20px_var(--foreground)] backdrop-blur transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
               >
                 <Icon className="h-[18px] w-[18px]" />
                 <AnimatePresence>
@@ -140,22 +141,19 @@ export function Hero() {
 
           <motion.div variants={reveal} custom={4} className="mt-10 flex flex-wrap items-center gap-4">
             <motion.a
-              href="#"
+              href={`mailto:${personal.email}`}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               className="glow-btn group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-foreground px-7 py-3.5 text-sm font-bold uppercase tracking-widest text-background"
-              style={{
-                boxShadow: "0 12px 40px -8px oklch(0.14 0.02 260 / 0.3)",
-              }}
             >
               <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 opacity-0 transition-opacity group-hover:opacity-100" />
               <Download className="relative h-4 w-4" />
-              <span className="relative">Download CV</span>
+              <span className="relative">Contact Me</span>
             </motion.a>
             <a
               href="#projects"
               data-cursor="View"
-              className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-foreground/15 px-7 py-3.5 text-sm font-semibold uppercase tracking-widest text-foreground transition-all hover:border-primary/40 hover:text-primary"
+              className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-foreground/15 bg-paper/45 px-7 py-3.5 text-sm font-semibold uppercase tracking-widest text-foreground shadow-[0_16px_40px_-30px_var(--foreground)] backdrop-blur transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
             >
               View Work
               <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -165,7 +163,7 @@ export function Hero() {
           <motion.div
             variants={reveal}
             custom={5}
-            className="mt-14 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4"
+            className="mt-14 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4"
           >
             {stats.map((s, i) => (
               <motion.div
@@ -175,7 +173,7 @@ export function Hero() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 + i * 0.08 }}
                 whileHover={{ y: -4, scale: 1.02 }}
-                className="group glass relative overflow-hidden rounded-2xl p-4 transition-colors hover:border-primary/30"
+                className="group glass relative overflow-hidden rounded-2xl p-4 transition-colors hover:border-primary/30 hover:bg-primary/[0.04]"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="relative font-display text-2xl font-medium tracking-tight md:text-3xl">
@@ -192,7 +190,7 @@ export function Hero() {
 
         <motion.div
           variants={portraitReveal}
-          className="relative aspect-square w-full max-w-[480px] justify-self-center lg:max-w-[560px]"
+          className="relative aspect-square w-full max-w-[460px] justify-self-center lg:max-w-[560px]"
         >
           <motion.div
             animate={{ rotate: 360 }}
@@ -219,7 +217,7 @@ export function Hero() {
               filter: "blur(20px)",
             }}
           />
-          <div className="absolute inset-8 overflow-hidden rounded-full border border-primary/30 glow-ring">
+          <div className="absolute inset-8 overflow-hidden rounded-[42%] border border-primary/30 shadow-[0_24px_90px_-45px_var(--foreground)] glow-ring">
             <motion.img
               src={portrait}
               alt={personal.name}

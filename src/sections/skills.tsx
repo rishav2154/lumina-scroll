@@ -26,9 +26,9 @@ export function Skills() {
             transition={{ duration: 0.8 }}
             className="font-display text-[clamp(1.75rem,4.5vw,3.5rem)] font-medium leading-tight tracking-tight"
           >
-            A galaxy of disciplines,
+            Technical foundations,
             <br />
-            <span className="text-primary">one operator.</span>
+            <span className="text-primary">business momentum.</span>
           </motion.h2>
 
           <motion.p
@@ -38,8 +38,8 @@ export function Skills() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-5 max-w-md text-pretty text-sm leading-relaxed text-background/60"
           >
-            I've spent a decade refusing to specialize in just one thing. The galaxy on the right
-            is interactive — every node is a discipline I ship in production.
+            My toolkit combines cloud computing, cyber security, programming, web technologies,
+            SEO, content strategy, communication, and client-focused business development.
           </motion.p>
 
           <motion.ul

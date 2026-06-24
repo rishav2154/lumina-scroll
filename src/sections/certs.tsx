@@ -19,7 +19,7 @@ export function Certs() {
               Certification vault
             </div>
             <h2 className="mt-2 font-display text-2xl font-medium tracking-tight">
-              Receipts for the curiosity.
+              Courses across cyber security and cloud foundations.
             </h2>
           </div>
         </div>

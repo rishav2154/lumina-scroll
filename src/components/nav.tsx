@@ -73,7 +73,7 @@ export function Nav() {
             paddingBottom: stuck ? 10 : 14,
           }}
           transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
-          className="glass flex items-center justify-between rounded-full px-5 transition-all duration-300"
+          className="glass flex items-center justify-between rounded-full px-4 transition-all duration-300 ring-1 ring-white/25 sm:px-5"
           style={{
             boxShadow: stuck
               ? "0 8px 32px -8px oklch(0.14 0.02 260 / 0.12), 0 0 0 1px oklch(0.14 0.02 260 / 0.04)"
@@ -84,7 +84,7 @@ export function Nav() {
             href="#top"
             className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight transition-transform hover:scale-[1.02]"
           >
-            <span className="relative grid h-8 w-8 place-items-center rounded-full bg-foreground font-display text-sm text-background">
+            <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-foreground font-display text-sm text-background shadow-[0_10px_24px_-14px_var(--foreground)]">
               H
               <span className="absolute inset-0 rounded-full bg-foreground opacity-0 transition-opacity group-hover:opacity-20" />
             </span>
@@ -120,7 +120,7 @@ export function Nav() {
           <div className="flex items-center gap-3">
             <a
               href="#contact"
-              className="group inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-all hover:scale-[1.03] active:scale-[0.98]"
+              className="group inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background shadow-[0_14px_28px_-18px_var(--foreground)] transition-all hover:scale-[1.03] hover:bg-primary active:scale-[0.98]"
               style={{
                 boxShadow: "0 4px 16px -4px oklch(0.14 0.02 260 / 0.2)",
               }}
@@ -147,7 +147,7 @@ export function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-lg md:hidden"
+            className="fixed inset-0 z-[60] bg-background/90 backdrop-blur-2xl md:hidden"
           >
             <div className="flex h-full flex-col px-6 py-6">
               <div className="flex items-center justify-between">
@@ -173,7 +173,7 @@ export function Nav() {
                       <a
                         href={l.href}
                         onClick={() => setMobileOpen(false)}
-                        className="block rounded-2xl px-4 py-4 font-display text-2xl font-medium transition-colors hover:bg-foreground/5"
+                        className="block rounded-2xl border border-transparent px-4 py-4 font-display text-2xl font-medium transition-colors hover:border-foreground/10 hover:bg-paper/70"
                         style={{
                           color:
                             activeSection === l.href

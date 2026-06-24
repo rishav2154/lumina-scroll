@@ -158,9 +158,9 @@ export function Contact() {
             transition={{ duration: 0.8 }}
             className="font-display text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[1.05] tracking-tight"
           >
-            Let's build something
+            Let's build practical
             <br />
-            <span className="text-primary">unmistakable.</span>
+            <span className="text-primary">digital solutions.</span>
           </motion.h2>
 
           <motion.p
@@ -169,8 +169,8 @@ export function Contact() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-6 max-w-md text-pretty text-sm leading-relaxed text-background/60"
           >
-            Always reading messages from founders, operators, and curious humans. Tell me what
-            you're trying to make happen.
+            Open to conversations around business development, technology solutions, cyber
+            security, SEO, content strategy, client coordination, and project partnerships.
           </motion.p>
 
           <motion.div
@@ -244,7 +244,7 @@ export function Contact() {
                 </div>
                 <h3 className="mt-6 font-display text-2xl font-medium">Signal received.</h3>
                 <p className="mt-3 text-sm text-muted-foreground">
-                  I'll reply within 48 hours, often sooner.
+                  Himanshi will reply as soon as possible.
                 </p>
                 <button
                   type="button"
@@ -258,7 +258,7 @@ export function Contact() {
               <div className="space-y-1">
                 <Field label="Your name" name="name" />
                 <Field label="Email" name="email" type="email" />
-                <Field label="What are you building?" name="message" textarea />
+                <Field label="How can we collaborate?" name="message" textarea />
                 <div className="pt-8">
                   <MagneticButton type="submit">
                     {loading ? (
@@ -268,7 +268,7 @@ export function Contact() {
                       </>
                     ) : (
                       <>
-                        Send transmission
+                        Send message
                         <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                       </>
                     )}

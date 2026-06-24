@@ -76,10 +76,10 @@ export function Bento() {
           </div>
           <div>
             <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-              Digital DNA
+              Profile Snapshot
             </div>
             <h2 className="mt-2 font-display text-2xl font-medium tracking-tight">
-              The dashboard behind the founder.
+              Education, languages, and operating strengths.
             </h2>
           </div>
         </div>
@@ -99,23 +99,23 @@ export function Bento() {
 
             <div className="relative z-10">
               <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
-                Lifetime impact
+                Academic track
               </div>
               <div className="mt-4 flex items-end gap-2">
                 <div className="font-display text-[clamp(3rem,7vw,6.5rem)] font-bold leading-none tracking-tight">
-                  <Counter to={2400000} />
+                  <Counter to={2026} />
                 </div>
-                <div className="mb-2 text-3xl font-bold text-primary">+</div>
+                <div className="mb-2 text-3xl font-bold text-primary">MCA</div>
               </div>
               <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-                Humans served across the products I've built, led, or advised.
+                Pursuing Masters of Computer Applications at Chandigarh University with Cloud Computing specialization.
               </p>
 
               <div className="mt-10 grid grid-cols-3 gap-3">
                 {[
-                  { l: "NPS", v: 72 },
-                  { l: "Retention", v: 91, suffix: "%" },
-                  { l: "Talks", v: 48 },
+                  { l: "BCA", v: 2023, suffix: "" },
+                  { l: "Roles", v: 4, suffix: "" },
+                  { l: "Certs", v: 4, suffix: "" },
                 ].map((m) => (
                   <motion.div
                     key={m.l}
@@ -146,17 +146,17 @@ export function Bento() {
             className="h-full min-h-[160px] overflow-hidden rounded-3xl border border-background/10 bg-foreground p-6 text-background transition-all"
           >
             <div className="text-[10px] uppercase tracking-[0.25em] text-background/50">
-              Currently reading
+              Languages
             </div>
             <div className="mt-3 font-display text-lg font-medium leading-snug">
-              "The Beginning of Infinity"
+              English · Intermediate
             </div>
-            <div className="text-sm text-background/70">David Deutsch</div>
+            <div className="text-sm text-background/70">Hindi · Native</div>
             <div className="mt-6 flex items-center gap-2">
               <div className="h-1 w-full rounded-full bg-background/20">
                 <div className="block h-full w-2/3 rounded-full bg-primary" />
               </div>
-              <span className="text-xs text-background/60">68%</span>
+              <span className="text-xs text-background/60">2 languages</span>
             </div>
           </motion.div>
         </TiltCard>
@@ -173,10 +173,10 @@ export function Bento() {
             <div className="absolute -right-8 -bottom-8 h-28 w-28 rounded-full bg-primary/10 blur-2xl" />
             <div className="relative z-10">
               <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                Studio
+                Focus
               </div>
-              <div className="mt-2 font-display text-xl font-medium">Bengaluru — 09:41</div>
-              <div className="mt-1 text-sm text-muted-foreground">28 degrees, clear skies</div>
+              <div className="mt-2 font-display text-xl font-medium">NeoSankalp</div>
+              <div className="mt-1 text-sm text-muted-foreground">Business development, clients, partnerships</div>
             </div>
           </motion.div>
         </TiltCard>
@@ -191,17 +191,17 @@ export function Bento() {
             className="h-full min-h-[140px] overflow-hidden rounded-3xl border border-foreground/10 bg-haze/50 p-6 transition-colors hover:border-primary/20"
           >
             <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-              Now writing
+              Core direction
             </div>
             <p className="mt-3 max-w-xl font-display text-lg font-medium leading-snug">
-              "Calm products win: how restraint becomes the competitive edge in an over-stimulated decade."
+              Building technology-driven solutions through cyber security awareness, cloud foundations, digital marketing, SEO, and client-focused project coordination.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-2">
               <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 text-[11px] text-muted-foreground">
-                Essay
+                Cloud Computing
               </span>
               <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 text-[11px] text-muted-foreground">
-                3 of 7 sections
+                Cyber Security · SEO · Business Development
               </span>
             </div>
           </motion.div>
